@@ -9,7 +9,7 @@
         <ListView
             android:layout_width="140dp"
             android:layout_height="186dp"
-            android:id="@+id/list_newBT_Devices"
+            android:id="@+id/listPaired_Devices"
 
             android:visibility="visible"
             android:layout_alignBottom="@+id/list_Paired_BT_devices"
@@ -32,7 +32,7 @@
             android:text="@string/list"
             android:id="@+id/button_paired"
             android:layout_height="50dp"
-            android:layout_below="@+id/list_newBT_Devices"
+            android:layout_below="@+id/listPaired_Devices"
             android:layout_alignParentStart="true"
             android:layout_marginTop="82dp" />
 

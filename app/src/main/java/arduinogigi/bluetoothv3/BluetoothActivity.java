@@ -36,7 +36,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
         pairedButton = (Button) findViewById(R.id.button_paired);
         scanButton = (Button) findViewById(R.id.button_scan);
-        listPairedDevices = (ListView) findViewById(R.id.list_Paired_BT_devices);
+        listPairedDevices = (ListView) findViewById(R.id.listPaired_Devices);
         listNewDevices = (ListView) findViewById(R.id.list_New_BT_Devices);
 
    /*
@@ -98,29 +98,23 @@ My listener for button click
 
     private void doDiscovery() {
         // if (D) Log.d(TAG, "doDiscovery()");
-
+    newFoundBtList=new ArrayList();
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
         setTitle(R.string.scanning);
-        // Turn on sub-title for new devices
-        // findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
-        // Toast.makeText(getApplicationContext(),"visible text new devices",Toast.LENGTH_SHORT).show();
-
-        // If we're already discovering, stop it
+        // Turn on sub-title for new devices        // If we're already discovering, stop it
         if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
 
         // Request discover from BluetoothAdapter
         mBluetoothAdapter.startDiscovery();
+        //Toast.makeText(getApplicationContext(),mBluetoothAdapter.getName().toString()+mBluetoothAdapter.getAddress(),Toast.LENGTH_LONG).show();
+        /*
 
-        Toast.makeText(getApplicationContext(),mBluetoothAdapter.getName().toString()+mBluetoothAdapter.getAddress(),Toast.LENGTH_LONG).show();
+         */
+        final  ArrayAdapter arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, newFoundBtList);
 
-    }
-
-
-    private void discover_BT(View view) {
-        //listBT(view);
         // Create a BroadcastReceiver for ACTION_FOUND
         BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -133,12 +127,15 @@ My listener for button click
                     // Add the name and address to an array adapter to show in a ListView
 
                     newFoundBtList.add(device.getName() + "\n" + device.getAddress());
+                    listPairedDevices.setAdapter(arrayAdapter2);
+
                 }
             }
         };
 // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
+
 
     }
 
