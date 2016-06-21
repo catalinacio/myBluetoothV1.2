@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BluetoothV3</string>
+    <string name="title_activity_bt">BtActivity</string>
+    <string name="scanning">scanning</string>
+    <string name="list">list</string>
+    <string name="scan">Scan</string>
+</resources>
