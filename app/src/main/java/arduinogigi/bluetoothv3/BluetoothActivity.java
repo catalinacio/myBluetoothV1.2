@@ -26,7 +26,7 @@ public class BluetoothActivity extends AppCompatActivity {
     Button pairedButton;
     Button scanButton;
 
-    BluetoothAdapter mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+    BluetoothAdapter mBluetoothAdapter;
 
 
     @Override
@@ -34,16 +34,21 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
+            init();
+
+
+    }
+
+    private void init() {
         pairedButton = (Button) findViewById(R.id.button_paired);
         scanButton = (Button) findViewById(R.id.button_scan);
         listPairedDevices = (ListView) findViewById(R.id.listPaired_Devices);
         listNewDevices = (ListView) findViewById(R.id.list_New_BT_Devices);
+        mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 
    /*
-
-
-My listener for button click
-    */
+    My listener for button click
+   */
 
         pairedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,17 +60,10 @@ My listener for button click
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scanNewBtsList();
+                scanNewBtsLists();
             }
         });
-
-
     }
-
-    private void scanNewBtsList() {
-        doDiscovery();
-    }
-
 
 
     /*
@@ -96,8 +94,8 @@ My listener for button click
         listPairedDevices.setAdapter(arrayAdapter);
     }
 
-    private void doDiscovery() {
-        // if (D) Log.d(TAG, "doDiscovery()");
+    private void scanNewBtsLists() {
+        // if (D) Log.d(TAG, "scanNewBtsLists()");
     newFoundBtList=new ArrayList();
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
