@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,7 +28,6 @@ public class BluetoothActivity extends AppCompatActivity {
     Button scanButton;
 
     BluetoothAdapter mBluetoothAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +63,20 @@ public class BluetoothActivity extends AppCompatActivity {
                 scanNewBtsLists();
             }
         });
+        listPairedDevices.setOnItemClickListener(
+                new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String example=String.valueOf(adapterView.getItemAtPosition(i));
+                        Toast.makeText(getApplicationContext(),"clicked the "+example,Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
+
     }
 
-
+        //private void getd
     /*
 
         private functions
