@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="arduinogigi.bluetoothv3.BluetoothActivity">
+    tools:context=".MyBtActivity">
 
     <ListView
         android:layout_width="140dp"
@@ -42,6 +42,16 @@
         android:layout_alignParentEnd="true"
         android:choiceMode="singleChoice"
         android:layout_alignBottom="@+id/listPaired_Devices" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_for_test"
+        android:onClick="onClickSend"
+        android:id="@+id/btn_sendTEST"
+        android:layout_below="@+id/button_scan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp" />
 
 
 </RelativeLayout>

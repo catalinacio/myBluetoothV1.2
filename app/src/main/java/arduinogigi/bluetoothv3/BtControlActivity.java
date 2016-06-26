@@ -91,7 +91,7 @@ public class BtControlActivity extends AppCompatActivity {
             {
                 if(iterator.getAddress().equals(DEVICE_ADDRESS))
                 {
-                    device=iterator;
+                    device = iterator;
                     found=true;
                     break;
                 }
@@ -209,7 +209,7 @@ public class BtControlActivity extends AppCompatActivity {
     }
 
     public void onClickBT(View view) {
-        Intent intent = new Intent(this, BluetoothActivity.class);
+        Intent intent = new Intent(this, MyBtActivity.class);
         startActivity(intent);
     }
 }
@@ -232,10 +232,10 @@ public class BtControlActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"no bt support",Toast.LENGTH_SHORT).show();
         }
 
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() >
+        Set<BluetoothDevice> devicePairedRepository = mBluetoothAdapter.getBondedDevices();
+        if (devicePairedRepository.size() >
                 0) {
-            for (BluetoothDevice device : pairedDevices) {
+            for (BluetoothDevice device : devicePairedRepository) {
                 mDevice = device;
             }
         }
@@ -246,11 +246,11 @@ public class BtControlActivity extends AppCompatActivity {
     }
 
     public void listDevices(){
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        Set<BluetoothDevice> devicePairedRepository = mBluetoothAdapter.getBondedDevices();
 // If there are paired devices
-        if (pairedDevices.size() > 0) {
+        if (devicePairedRepository.size() > 0) {
             // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices) {
+            for (BluetoothDevice device : devicePairedRepository) {
                 // Add the name and address to an array adapter to show in a ListView
 
                 mArrayAdapter.add(device.getName() + "\n" + device.getAddress());

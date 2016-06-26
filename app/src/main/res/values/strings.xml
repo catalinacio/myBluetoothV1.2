@@ -4,4 +4,5 @@
     <string name="scanning">scanning</string>
     <string name="list">list</string>
     <string name="scan">Scan</string>
+    <string name="send_for_test">Send for TEST</string>
 </resources>
