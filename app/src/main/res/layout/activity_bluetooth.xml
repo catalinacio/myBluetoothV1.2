@@ -21,7 +21,8 @@
         android:text="@string/list"
         android:id="@+id/button_paired"
         android:layout_height="50dp"
-        android:layout_centerVertical="true"
+        android:layout_alignBaseline="@+id/button_scan"
+        android:layout_alignBottom="@+id/button_scan"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -30,9 +31,8 @@
         android:text="@string/scan"
         android:id="@+id/button_scan"
         android:layout_width="65dp"
-        android:layout_alignBaseline="@+id/button_paired"
-        android:layout_alignBottom="@+id/button_paired"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/list_New_BT_Devices"
+        android:layout_alignEnd="@+id/list_New_BT_Devices" />
 
     <ListView
         android:layout_width="140dp"
@@ -49,9 +49,56 @@
         android:text="@string/send_for_test"
         android:onClick="onClickSend"
         android:id="@+id/btn_sendTEST"
-        android:layout_below="@+id/button_scan"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_alignTop="@+id/btn_sendChar"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/blink"
+        android:onClick="sendCharMessage"
+        android:id="@+id/btn_sendChar"
+        android:layout_below="@+id/button_paired"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="connect My Device"
+        android:onClick="connectH506"
+        android:id="@+id/button_conn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/btn_sendChar" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/left"
+        android:onClick="sendLEFTSERVOCharMessage"
+        android:id="@+id/button"
+        android:drawableTint="@android:drawable/ic_media_rew"
+        android:layout_above="@+id/button_conn"
+        android:layout_alignEnd="@+id/listPaired_Devices"
+        android:layout_marginBottom="31dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/right"
+        android:onClick="sendRIGHTCharMessage"
+        android:id="@+id/button2"
+        android:layout_alignBottom="@+id/button"
+        android:layout_alignStart="@+id/list_New_BT_Devices" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:onClick="sendCENTERCharMessage"
+        android:id="@+id/button3"
+        android:drawableTint="@android:drawable/ic_media_rew"
+        android:layout_above="@+id/btn_sendTEST"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

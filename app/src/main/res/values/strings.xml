@@ -4,5 +4,9 @@
     <string name="scanning">scanning</string>
     <string name="list">list</string>
     <string name="scan">Scan</string>
-    <string name="send_for_test">Send for TEST</string>
+    <string name="send_for_test">Send byte</string>
+    <string name="send_char">Send char</string>
+    <string name="blink">Blink</string>
+    <string name="right">right</string>
+    <string name="left">left</string>
 </resources>

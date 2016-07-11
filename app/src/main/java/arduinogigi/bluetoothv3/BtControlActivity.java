@@ -1,5 +1,6 @@
 package arduinogigi.bluetoothv3;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -26,7 +27,16 @@ import java.util.UUID;
 
 
 public class BtControlActivity extends AppCompatActivity {
-    private final String DEVICE_ADDRESS="BC:47:60:20:AB:A6";
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private final String DEVICE_ADDRESS = "20:15:02:13:11:03";
+
+    private final String myDEVICE_ADDRESS = "20:15:02:13:11:03";
+    BluetoothDevice mBluetoothDevice;
+    BluetoothAdapter mBluetoothAdapter;
+
+    /**
+     *
+     */
     private final UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
@@ -211,6 +221,35 @@ public class BtControlActivity extends AppCompatActivity {
     public void onClickBT(View view) {
         Intent intent = new Intent(this, MyBtActivity.class);
         startActivity(intent);
+    }
+
+
+    /**
+     * My addings
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    // Get the device MAC address
+
+                    // Get the BLuetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+                    // Attempt to connect to the device
+                    //Connect
+                    Toast.makeText(getApplicationContext(), "Connect now ", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    public boolean myDeviceTestSTART(View view) {
+        Intent serverIntent = new Intent(this, MyBtActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+        return true;
     }
 }
 /*
