@@ -7,8 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,8 +26,31 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * this has to be  done whenever i Click the Connect
+ * <p>
+ * inside Connect, I got to get the Device address through listed devices.
+ * <p>
+ * to get the device appear in the devices list I have to Search. whenever I find it i request Pairing and then
+ * I should clear the found list and add it later to PAIRED LIST.
+ * SO WHEN I CLICK ON PAIRED LIST LINE, I GET THE DEVICE ADDRESS INTO A STRING global
+ * <p>
+ * then when i click connect, it attempts connect to THAT remoteDEVICE Address.
+ * if connection succceds I can Send activity for result back. SO i can send commends to BT.
+ * aka CHAR/BYTE
+ */
+
+
+
 public class MyBtActivity extends AppCompatActivity {
+    private static final char CENTERSERVOPOSITION = 'x';
     String DEVICE_ADDRESS = null;
+    private char BLINK = '1';
+    private char LEFTDRRIVESERVO = 'l';
+    private char RIGHTDRIVESERVO = 'r';
+
+    private final String MESSAGE_MOVE = "1";
+    private final String myDEVICE_ADDRESS = "20:15:02:13:11:03";
     private static final String TAG = "MyBtActivity";
     private static final int MESSAGE_READ = 0;
     private final UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
@@ -51,11 +77,55 @@ public class MyBtActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
         init();
+
+        /**
+         *
+         * HAS TO BE DELETED FROM HERE AND PUT INTO CONNECT
+         */
+        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+        mConnectThread = new ConnectThread(mBluetoothDevice);
+        mConnectThread.start();
+
+
+
     }
 
     public void onClickSend(View view) {
+        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+        mConnectThread = new ConnectThread(mBluetoothDevice);
+        mConnectThread.start();
+
+        sendMessage();
+
+
         Toast.makeText(getApplicationContext(), "Send f to arduino", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void sendMessage() {
+        byte[] send = MESSAGE_MOVE.getBytes();
+        mConnectedThread.write(send);
+
+    }
+
+    public void sendCharMessage(View view) {
+        mConnectedThread.mywrite(BLINK);
+
+
+    }
+
+    public void sendLEFTSERVOCharMessage(View view) {
+        mConnectedThread.mywrite(LEFTDRRIVESERVO);
+
+
+    }
+
+    public void sendRIGHTCharMessage(View view) {
+        mConnectedThread.mywrite(RIGHTDRIVESERVO);
+    }
+
+    public void sendCENTERCharMessage(View view) {
+        mConnectedThread.mywrite(CENTERSERVOPOSITION);
     }
 
     @Override
@@ -71,8 +141,6 @@ public class MyBtActivity extends AppCompatActivity {
         scanButton = (Button) findViewById(R.id.button_scan);
         listPairedDevices = (ListView) findViewById(R.id.listPaired_Devices);
         listNewDevices = (ListView) findViewById(R.id.list_New_BT_Devices);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
         pairedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +154,9 @@ public class MyBtActivity extends AppCompatActivity {
             }
         });
 
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+
         actionItems();
 
 
@@ -98,14 +169,18 @@ public class MyBtActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //the device adress is taken from the array and you substract the last 17 letters representing the MAC;
                 // XX : XX : XX : XX : XX : XX mac form type
+                mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+                Toast.makeText(getApplicationContext(), mBluetoothDevice.getAddress() + " got if from REMOTE", Toast.LENGTH_SHORT).show();
+
+                /*
+
                 DEVICE_ADDRESS = pairedList.get(i).toString().substring(pairedList.get(i).toString().length() - 17);
                 mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(DEVICE_ADDRESS); // i recover the bt dev from adapter
-                //Toast.makeText(getApplicationContext(),mBluetoothDevice.getAddress()+" got if from REMOTE",Toast.LENGTH_SHORT).show();
 
                 connectDiscoveredDevice(mBluetoothDevice);
                 if (Thread.currentThread().isAlive()) {
                     Toast.makeText(getApplicationContext(), "migh bve goncet", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
         /*this dont cursh bunt neeeds separate thread
@@ -145,6 +220,22 @@ public class MyBtActivity extends AppCompatActivity {
         });
     }
 
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            byte[] writeBuf = (byte[]) msg.obj;
+            int begin = (int) msg.arg1;
+            int end = (int) msg.arg2;
+            switch (msg.what) {
+                case 1
+                        :
+                    String writeMessage = new String(writeBuf);
+                    writeMessage = writeMessage.substring(begin, end);
+                    break;
+            }
+        }
+    };
+
     private void connectDiscoveredDevice(BluetoothDevice bt) {
 
         if (mConnectThread != null) {
@@ -153,6 +244,8 @@ public class MyBtActivity extends AppCompatActivity {
         }
         mConnectThread = new ConnectThread(bt);
         mConnectThread.start();
+        mConnectedThread.start();
+        sendMessage();
     }
 
     private boolean testDeviceAdress(String s) {
@@ -243,6 +336,19 @@ public class MyBtActivity extends AppCompatActivity {
         listPairedDevices.setAdapter(arrayAdapter);
     }
 
+    public void connectH506(View view) {
+        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
+        }
+        mConnectThread = new ConnectThread(mBluetoothDevice);
+        mConnectThread.start();
+
+        Toast.makeText(getApplicationContext(), mConnectThread.getState().toString(), Toast.LENGTH_SHORT).show();
+    }
+
 
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
@@ -280,8 +386,16 @@ public class MyBtActivity extends AppCompatActivity {
                 return;
             }
 
+            mConnectedThread = new ConnectedThread(mmSocket);
+            try {
+                mConnectedThread.start();
+            } catch (IllegalThreadStateException e) {
+                Log.e(TAG, "error");
+
+            }
+
             // Do work to manage the connection (in a separate thread)
-            manageConnectedSocket(mmSocket);
+            // manageConnectedSocket(mmSocket);
         }
 
         /**
@@ -295,7 +409,7 @@ public class MyBtActivity extends AppCompatActivity {
         }
     }
 
-    private void manageConnectedSocket(BluetoothSocket mmSocket) {
+    private void manageConnectedSocket(BluetoothSocket socket) {
 
         if (mConnectThread != null) {
             mConnectThread.cancel();
@@ -307,9 +421,10 @@ public class MyBtActivity extends AppCompatActivity {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
-        mConnectedThread = new ConnectedThread(mmSocket);
+        mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
     }
+
 
 
     private class ConnectedThread extends Thread {
@@ -330,26 +445,39 @@ public class MyBtActivity extends AppCompatActivity {
             } catch (IOException e) {
             }
 
+
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
 
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
-
-            // Keep listening to the InputStream until an exception occurs
+            byte[] buffer = new byte[1024];
+            int begin = 0;
+            int bytes = 0;
             while (true) {
                 try {
-                    // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
-                    // Send the obtained bytes to the UI activity
-                    // Handler mHandler;
-                    //  mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                    bytes += mmInStream.read(buffer, bytes, buffer.length
+                            -
+                            bytes);
+                    for (int i = begin; i < bytes; i++) {
+                        if (buffer[i] == "#".getBytes()[0]) {
+                            mHandler.obtainMessage(
+                                    1
+                                    , begin, i, buffer).sendToTarget();
+                            begin = i + 1;
+                            if (i == bytes
+                                    -
+                                    1) {
+                                bytes = 0;
+                                begin = 0;
+                            }
+                        }
+                    }
                 } catch (IOException e) {
                     break;
                 }
             }
+
         }
 
         // Call this from the main activity to send data to the remote device
@@ -359,6 +487,14 @@ public class MyBtActivity extends AppCompatActivity {
             } catch (IOException e) {
             }
         }
+
+        public void mywrite(char letter) {
+            try {
+                mmOutStream.write(letter);
+            } catch (IOException e) {
+            }
+        }
+
 
         //Call this from the main activity to shutdown the connection
         public void cancel() {
