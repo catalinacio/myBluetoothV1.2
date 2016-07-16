@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BluetoothV3</string>
+    <string name="app_name">MyBT LicenseControl App</string>
     <string name="title_activity_bt">BtActivity</string>
     <string name="scanning">scanning</string>
     <string name="list">list</string>
@@ -9,4 +9,8 @@
     <string name="blink">Blink</string>
     <string name="right">right</string>
     <string name="left">left</string>
+    <string name="connect_my_device">connect My Device</string>
+    <string name="x">x</string>
+    <string name="front">front</string>
+    <string name="back">back</string>
 </resources>

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,6 +45,9 @@ import java.util.UUID;
 
 public class MyBtActivity extends AppCompatActivity {
     private static final char CENTERSERVOPOSITION = 'x';
+    private static final char MOVECARTOBACK = 'b';
+
+    private static final char MOVECARTOFRONT = 'f';
     String DEVICE_ADDRESS = null;
     private char BLINK = '1';
     private char LEFTDRRIVESERVO = 'l';
@@ -82,9 +86,9 @@ public class MyBtActivity extends AppCompatActivity {
          *
          * HAS TO BE DELETED FROM HERE AND PUT INTO CONNECT
          */
-        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
-        mConnectThread = new ConnectThread(mBluetoothDevice);
-        mConnectThread.start();
+    //    mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+      //  mConnectThread = new ConnectThread(mBluetoothDevice);
+        //mConnectThread.start();
 
 
 
@@ -128,6 +132,14 @@ public class MyBtActivity extends AppCompatActivity {
         mConnectedThread.mywrite(CENTERSERVOPOSITION);
     }
 
+    public void sendFRONTCharMessage(View view) {
+        mConnectedThread.mywrite(MOVECARTOFRONT);
+    }
+
+    public void sendBACKRCharMessage(View view) {
+        mConnectedThread.mywrite(MOVECARTOBACK);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -167,38 +179,15 @@ public class MyBtActivity extends AppCompatActivity {
         listPairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //the device adress is taken from the array and you substract the last 17 letters representing the MAC;
-                // XX : XX : XX : XX : XX : XX mac form type
-                mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+             //     mBluetoothDevice = mBluetoothAdapter.getRemoteDevice();
+                DEVICE_ADDRESS = newFoundBtList.get(i).toString().substring(newFoundBtList.get(i).toString().length() - 17);
+                mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(DEVICE_ADDRESS);
+
                 Toast.makeText(getApplicationContext(), mBluetoothDevice.getAddress() + " got if from REMOTE", Toast.LENGTH_SHORT).show();
 
-                /*
-
-                DEVICE_ADDRESS = pairedList.get(i).toString().substring(pairedList.get(i).toString().length() - 17);
-                mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(DEVICE_ADDRESS); // i recover the bt dev from adapter
-
-                connectDiscoveredDevice(mBluetoothDevice);
-                if (Thread.currentThread().isAlive()) {
-                    Toast.makeText(getApplicationContext(), "migh bve goncet", Toast.LENGTH_SHORT).show();
-                }*/
             }
         });
-        /*this dont cursh bunt neeeds separate thread
-        if( testDeviceAdress(DEVICE_ADDRESS)) {
-                  Toast.makeText(getApplicationContext(),mBluetoothDevice.getAddress()+" got it from dev",Toast.LENGTH_SHORT).show();
-                  try {
-                      socket = mBluetoothDevice.createRfcommSocketToServiceRecord(PORT_UUID);
-                      socket.connect();
-                  }
-                  catch (Exception ConnectException ) {
-                      Log.e(TAG,"connect error");
-                  }
 
-                  }
-              else{
-                  Toast.makeText(getApplicationContext(),"device adress is a string "+ DEVICE_ADDRESS,Toast.LENGTH_SHORT).show();
-              }
-         */
         listNewDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -208,14 +197,6 @@ public class MyBtActivity extends AppCompatActivity {
                 connectDiscoveredDevice(mBluetoothDevice);
                 Toast.makeText(getApplicationContext(), mBluetoothDevice.getAddress() + " got NEW DEV if from REMOTE", Toast.LENGTH_SHORT).show();
 
-                // Toast.makeText(getApplicationContext(),"Clicked new Device To pair"+DEVICE_ADDRESS,Toast.LENGTH_SHORT).show();
-                // These lines are Setting the address to device adress then return to main activity;
-                /*
-                Intent intent = new Intent();
-                intent.putExtra(DEVICE_ADDRESS, DEVICE_ADDRESS);
-                // Set result and finish this Activity
-                setResult(MyBtActivity.RESULT_OK, intent);
-                finish();*/
             }
         });
     }
