@@ -15,8 +15,9 @@
         android:text="@string/list"
         android:id="@+id/button_paired"
         android:layout_height="50dp"
-        android:layout_above="@+id/angry_btn"
-        android:layout_alignParentStart="true" />
+        android:layout_gravity="center"
+        android:layout_below="@+id/angry_btn"
+        android:layout_toStartOf="@+id/button" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -24,8 +25,8 @@
         android:text="@string/scan"
         android:id="@+id/button_scan"
         android:layout_width="65dp"
-        android:layout_alignBottom="@+id/button3"
-        android:layout_toEndOf="@+id/button3" />
+        android:layout_above="@+id/angry_btn"
+        android:layout_alignParentEnd="true" />
 
     <ListView
         android:layout_width="140dp"
@@ -44,7 +45,7 @@
         android:id="@+id/btn_sendChar"
         android:backgroundTintMode="src_in"
         android:layout_below="@+id/list_New_BT_Devices"
-        android:layout_alignEnd="@+id/list_New_BT_Devices" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="100dp"
@@ -59,15 +60,16 @@
 
 
         android:id="@+id/angry_btn"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:shadowDx="0"
         android:singleLine="false"
         android:focusable="false"
         android:contextClickable="true"
-        android:text="t"
-        android:layout_alignTop="@+id/button3"
-        android:layout_toStartOf="@+id/button3" />
+        android:text="nw"
+        android:layout_above="@+id/button3"
+        android:layout_alignEnd="@+id/button"
+        android:background="@drawable/my_btn_shape_r" />
 
     <Button
         android:layout_width="wrap_content"
@@ -75,30 +77,31 @@
         android:text="@string/left"
         android:onClick="sendLEFTSERVOCharMessage"
         android:id="@+id/button"
-        android:foreground="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-        android:background="#9d1919"
-        android:layout_below="@+id/button3"
-        android:layout_alignStart="@+id/angry_btn" />
+        android:layout_below="@+id/button4"
+        android:layout_toStartOf="@+id/button4"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/right"
-        android:onClick="sendRIGHTCharMessage"
+        android:onClick="sendRIGHTSERVOCharMessage"
         android:id="@+id/button2"
-        android:layout_below="@+id/button3"
-        android:layout_toEndOf="@+id/button3" />
+        android:layout_below="@+id/button4"
+        android:layout_toEndOf="@+id/button4"
+        android:textColor="@color/colorPrimary" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="@string/x"
-        android:onClick="sendCENTERCharMessage"
+        android:onClick="sendCENTERSERVOPOSITIONCharMessage"
         android:id="@+id/button3"
+        android:background="@drawable/my_btn_shape_f"
+
         android:layout_below="@+id/button4"
-        android:layout_toEndOf="@+id/listPaired_Devices"
-        android:background="#b71919"
-        android:foreground="@drawable/abc_btn_radio_material" />
+        android:layout_alignEnd="@+id/button4" />
 
     <Button
         android:layout_width="wrap_content"
@@ -109,11 +112,11 @@
         android:shadowColor="#a14848"
         android:focusable="false"
         android:textStyle="bold"
-        android:background="@drawable/material5"
         android:textColorHighlight="@color/colorPrimary"
-        style="@style/Base.Widget.AppCompat.Button"
         android:layout_alignTop="@+id/btn_sendChar"
-        android:layout_toStartOf="@+id/button2" />
+        android:layout_toEndOf="@+id/listPaired_Devices"
+        style="@android:style/Holo.SegmentedButton"
+        android:background="@color/colorPrimary" />
 
     <Button
         android:layout_width="65dp"
@@ -121,11 +124,10 @@
         android:text="@string/back"
         android:onClick="sendBACKRCharMessage"
         android:id="@+id/button5"
-        android:backgroundTintMode="src_in"
         style="@android:style/Holo.SegmentedButton"
         android:background="@color/colorPrimary"
-        android:layout_alignTop="@+id/button6"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/button_paired"
+        android:layout_alignStart="@+id/button3" />
 
     <Button
         android:layout_width="60dp"
@@ -133,11 +135,32 @@
         android:text="SE"
         android:onClick="sendBACKRCharMessage"
         android:id="@+id/button6"
-        android:background="#78561e1e"
-        android:layout_below="@+id/button"
+        android:background="@drawable/my_btn_shape_l"
+        android:layout_alignTop="@+id/button5"
+        android:layout_toStartOf="@+id/button_conn"
         android:layout_alignEnd="@+id/button" />
 
+    <Button
+        android:id="@+id/button15"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:shadowDx="0"
+        android:singleLine="false"
+        android:focusable="false"
+        android:text="nw"
+        android:background="@drawable/my_btn_shape_r"
+        android:layout_below="@+id/button2"
+        android:layout_toEndOf="@+id/button5" />
 
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="NE"
+        android:onClick="sendBACKRCharMessage"
+        android:id="@+id/button16"
+        android:background="@drawable/my_btn_shape_r"
+        android:layout_alignBottom="@+id/btn_sendChar"
+        android:layout_alignStart="@+id/button15" />
 
 
 </RelativeLayout>

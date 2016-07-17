@@ -1,3 +1,53 @@
+main app,
+
+switch for bt turn on
+control my Arduino selector. (for the moment just my RC car available)
+
+if the bt is dezactivated you must switch on to continue
+
+
+when you press a button, the method send<Respective>char is called and it send the char
+through Connected thread myWrite function straight to bluetooth.
+after arduino executes the command, it is ready to recieve a new char commadn
+
+
+
+
+----
+o clasa device list
+
+are o lista care afiseaza dispozitivele imperecheaete, sau cele  nou descoperite
+
+daca se da click pe un dispozitiv nou se cere imperecherea
+
+daca se da click pe un dispozitiv imperecheat se salveaza adresa
+se returneaza adresa/ un obiect BLuetoothDevice
+la care se contecteaza in Activity BT
+--
+
+  android:gradientRadius="81"
+        android:centerX="35%"
+        android:centerY="50%"
+        android:startColor="#54E82E"
+        android:endColor="#FF5784"
+        android:type="radial"
+        android:width="120dp"
+        android:height="80dp"
+        android:width="8dp"
+        android:color="#54E82E"
+
+
+  <item
+        android:state_focused="false"
+    android:state_activated="false"
+            android:state_enabled="true"
+        android:drawable="@drawable/center_shape_x">
+    </item>
+
+
+
+
+-------------------------------------
 package arduinogigi.bluetoothv3;
 
 import android.app.Activity;

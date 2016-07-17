@@ -77,6 +77,12 @@ public class BtMainControlActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
 
     private void actionInit() {
         imageView.setVisibility(View.INVISIBLE);
@@ -97,17 +103,17 @@ public class BtMainControlActivity extends AppCompatActivity {
     private void disable_Bluetooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
+              mBluetoothAdapter.disable();
         }
     }
 
     private void enable_Bluetooth() {
         CheckBt();
         // to add swtich activated()
-        if (!mBluetoothAdapter.isEnabled()) {
+      //  if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
+      //  }
     }
 
     private void CheckBt() {
@@ -122,11 +128,92 @@ public class BtMainControlActivity extends AppCompatActivity {
                     "Bluetooth null !", Toast.LENGTH_SHORT).show();
         }
     }
+    public void onClickSelectDeviceImage(View view) {
+        imageView.setVisibility(View.VISIBLE);
+
+    }
 
     /**
      *
      *
      */
+
+
+    public boolean myDeviceTestSTART(View view) {
+        Intent serverIntent = new Intent(this, BluetoothActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+        return true;
+    }
+
+    public void actionControlLaunch(View view) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        //  alertDialogBuilder.setNegativeButton("No");
+        //  alertDialogBuilder.setPositiveButton("Yes");
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                imageView.setVisibility(View.INVISIBLE);
+                try {
+                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    if (mBluetoothAdapter.isEnabled()) {
+
+                        launchMyBtActivity();
+                    }
+                    if(!mBluetoothAdapter.isEnabled())
+                        Toast.makeText(getApplicationContext(),"Activate Bt",Toast.LENGTH_SHORT).show();
+                }
+                catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+
+                    Toast.makeText(getApplicationContext(),"cancelled",Toast.LENGTH_SHORT).show();
+                     imageView.setVisibility(View.INVISIBLE);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
+        alertDialogBuilder.setMessage("do you want to launch this?");
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void launchMyBtActivity() {
+        Intent intent = new Intent(this, MyBtActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    /**
+     * My addings
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    // Get the device MAC address
+
+                    // Get the BLuetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+                    // Attempt to connect to the device
+                    //Connect
+                    Toast.makeText(getApplicationContext(), "Connect now ", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
 
 
     public boolean BTinit() {
@@ -185,87 +272,6 @@ public class BtMainControlActivity extends AppCompatActivity {
 
         return connected;
     }
-
-    public void onClickStart(View view) {
-        imageView.setVisibility(View.VISIBLE);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    /*
-
-        if (BTinit()) {
-            if (BTconnect()) {
-                //setUiEnabled(true);
-                deviceConnected = true;
-                beginListenForData();
-                textView.append("\nConnection Opened!\n");
-            }
-
-        }*/
-    }
-
-
-    public void onClickBT(View view) {
-        Intent intent = new Intent(this, MyBtActivity.class);
-        startActivity(intent);
-    }
-
-    public void launchMyBtActivity() {
-        Intent intent = new Intent(this, MyBtActivity.class);
-        startActivity(intent);
-    }
-
-    public boolean myDeviceTestSTART(View view) {
-        Intent serverIntent = new Intent(this, MyBtActivity.class);
-        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-        return true;
-    }
-
-    public void actionControlLaunch(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        //  alertDialogBuilder.setNegativeButton("No");
-        //  alertDialogBuilder.setPositiveButton("Yes");
-        alertDialogBuilder.setNegativeButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                launchMyBtActivity();
-                //Toast.makeText(getApplicationContext(),"clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
-        alertDialogBuilder.setMessage("do you want to launch this?");
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-    }
-
-    /**
-     * My addings
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (requestCode) {
-            case REQUEST_CONNECT_DEVICE:
-                // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK) {
-                    // Get the device MAC address
-
-                    // Get the BLuetoothDevice object
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
-                    // Attempt to connect to the device
-                    //Connect
-                    Toast.makeText(getApplicationContext(), "Connect now ", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-        }
-    }
-
-    public void onClickClear(View view) {
-        textView.setText("");
-    }
-
     void beginListenForData() {
         final Handler handler = new Handler();
         stopThread = false;

@@ -41,18 +41,14 @@ import java.util.UUID;
  * aka CHAR/BYTE
  */
 
-
-
 public class MyBtActivity extends AppCompatActivity {
     private static final char CENTERSERVOPOSITION = 'x';
     private static final char MOVECARTOBACK = 'b';
-
     private static final char MOVECARTOFRONT = 'f';
-    String DEVICE_ADDRESS = null;
     private char BLINK = '1';
     private char LEFTDRRIVESERVO = 'l';
     private char RIGHTDRIVESERVO = 'r';
-
+    String DEVICE_ADDRESS = null;
     private final String MESSAGE_MOVE = "1";
     private final String myDEVICE_ADDRESS = "20:15:02:13:11:03";
     private static final String TAG = "MyBtActivity";
@@ -94,59 +90,24 @@ public class MyBtActivity extends AppCompatActivity {
 
     }
 
-    public void onClickSend(View view) {
-        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
-        mConnectThread = new ConnectThread(mBluetoothDevice);
-        mConnectThread.start();
 
-        sendMessage();
-
-
-        Toast.makeText(getApplicationContext(), "Send f to arduino", Toast.LENGTH_SHORT).show();
-
-    }
-
-    private void sendMessage() {
-        byte[] send = MESSAGE_MOVE.getBytes();
-        mConnectedThread.write(send);
-
-    }
-
-    public void sendCharMessage(View view) {
-        mConnectedThread.mywrite(BLINK);
-
-
-    }
-
-    public void sendLEFTSERVOCharMessage(View view) {
-        mConnectedThread.mywrite(LEFTDRRIVESERVO);
-
-
-    }
-
-    public void sendRIGHTCharMessage(View view) {
-        mConnectedThread.mywrite(RIGHTDRIVESERVO);
-    }
-
-    public void sendCENTERCharMessage(View view) {
-        mConnectedThread.mywrite(CENTERSERVOPOSITION);
-    }
-
-    public void sendFRONTCharMessage(View view) {
-        mConnectedThread.mywrite(MOVECARTOFRONT);
-    }
-
-    public void sendBACKRCharMessage(View view) {
-        mConnectedThread.mywrite(MOVECARTOBACK);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(mReceiver);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.unregisterReceiver(mReceiver);
+    protected void onPostResume() {
+        super.onPostResume();
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    finish();
+    }
 
     private void init() {
         pairedButton = (Button) findViewById(R.id.button_paired);
@@ -179,7 +140,7 @@ public class MyBtActivity extends AppCompatActivity {
         listPairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-             //     mBluetoothDevice = mBluetoothAdapter.getRemoteDevice();
+                //     mBluetoothDevice = mBluetoothAdapter.getRemoteDevice();
                 DEVICE_ADDRESS = newFoundBtList.get(i).toString().substring(newFoundBtList.get(i).toString().length() - 17);
                 mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(DEVICE_ADDRESS);
 
@@ -200,6 +161,51 @@ public class MyBtActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void sendMessage() {
+        byte[] send = MESSAGE_MOVE.getBytes();
+        mConnectedThread.write(send);
+
+    }
+
+    public void sendCharMessage(View view) {
+        mConnectedThread.mywrite(BLINK);
+
+
+    }
+
+    public void sendLEFTSERVOCharMessage(View view) {
+        mConnectedThread.mywrite(LEFTDRRIVESERVO);
+
+
+    }
+
+    public void sendRIGHTSERVOCharMessage(View view) {
+        mConnectedThread.mywrite(RIGHTDRIVESERVO);
+    }
+
+    public void sendCENTERSERVOPOSITIONCharMessage(View view) {
+        mConnectedThread.mywrite(CENTERSERVOPOSITION);
+    }
+
+    public void sendFRONTCharMessage(View view) {
+        mConnectedThread.mywrite(MOVECARTOFRONT);
+    }
+
+    public void sendBACKRCharMessage(View view) {
+        mConnectedThread.mywrite(MOVECARTOBACK);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mReceiver);
+
+    }
+
+
+
 
     Handler mHandler = new Handler() {
         @Override
@@ -486,5 +492,16 @@ public class MyBtActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickSend(View view) {
+        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(myDEVICE_ADDRESS);
+        mConnectThread = new ConnectThread(mBluetoothDevice);
+        mConnectThread.start();
+
+        sendMessage();
+
+
+        Toast.makeText(getApplicationContext(), "Send f to arduino", Toast.LENGTH_SHORT).show();
+
+    }
 
 }

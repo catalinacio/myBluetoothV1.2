@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
        </activity>
+        <activity android:name=".MyBtActivity">
+
+
+        </activity>
+
+        <activity android:name=".BluetoothActivity">
+
+</activity>
+
     </application>
 
 </manifest>
