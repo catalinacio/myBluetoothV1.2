@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d2eecb"
     android:weightSum="1">
@@ -18,7 +20,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="586dp"
-        android:layout_gravity="left|right"
         android:id="@+id/f"
         android:focusable="true">
 
@@ -36,13 +37,14 @@
             android:focusable="true" />
 
         <Button
+
+            style="@style/button_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="sendLEFTSERVOCharMessage"
             android:id="@+id/btn_left"
             android:layout_below="@+id/btn_front"
             android:layout_toStartOf="@+id/btn_front"
-            android:background="@drawable/my_btn_shape_l"
             android:text="l" />
 
         <Button
@@ -107,7 +109,7 @@
             android:text="New Button"
             android:id="@+id/button14"
 
-            android:background="@color/colorAccent"
+            android:background="@drawable/btn_pressed"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 
@@ -129,21 +131,11 @@
         <Button
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:text="NE"
-            android:onClick="sendBACKRCharMessage"
-            android:id="@+id/button8"
-            android:background="@drawable/my_btn_shape_r"
-            android:layout_marginLeft="5dp"
-            android:layout_above="@+id/btn_rigtht"
-            android:layout_alignStart="@+id/btn_rigtht" />
-
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="40dp"
             android:text="SE"
             android:onClick="sendBACKRCharMessage"
             android:id="@+id/button10"
-            android:background="@drawable/my_btn_shape_l"
+            style="@style/button_left_small"
+            android:theme="@style/button"
             android:layout_marginLeft="25dp"
             android:layout_below="@+id/btn_left"
             android:layout_alignEnd="@+id/btn_left"
@@ -154,16 +146,41 @@
 
             android:text="NW"
             android:textColor="#191919"
-            android:textSize="26sp"
+            android:textSize="20dp"
 
-            android:layout_width="100dp"
-            android:layout_height="54dp"
-
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            style="@style/button_left_small"
             android:id="@+id/button11"
-            android:background="@drawable/btn_nw_shape"
-            android:layout_marginRight="5dp"
             android:textAlignment="viewStart"
-            android:layout_alignTop="@+id/button8"
-            android:layout_toStartOf="@+id/btn_x" />
+            android:layout_above="@+id/btn_left"
+            android:layout_alignEnd="@+id/button10"
+            android:paddingLeft="20dp"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentBottom="false" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nfocus"
+            android:id="@+id/button9"
+            android:background="@drawable/btn_focused"
+            android:layout_below="@+id/button14"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            style="@style/button"
+            android:id="@+id/button8"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:shadowDx="0"
+            android:singleLine="false"
+            android:focusable="false"
+            android:contextClickable="true"
+            android:text="NE"
+            android:background="@drawable/my_btn_shape_r"
+            android:layout_marginLeft="5dp"
+            android:layout_above="@+id/btn_x"
+            android:layout_toEndOf="@+id/btn_front" />
     </RelativeLayout>
 </LinearLayout>

@@ -80,7 +80,7 @@ public class BluetoothActivity extends AppCompatActivity {
         back_btn = (Button) findViewById(R.id.btn_back);
         connect_btn = (Button) findViewById(R.id.btn_connect);
 
-
+    }
       //  test_btn = (Button) findViewById(R.id.btn_test_my_things);
 
        /* test_btn.setOnLongClickListener(new View.OnLongClickListener() {
