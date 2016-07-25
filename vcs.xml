@@ -10,4 +10,7 @@
     </option>
     <option name="cloneParentDir" value="E:\Android" />
   </component>
+  <component name="VcsApplicationSettings">
+    <option name="PATCH_STORAGE_LOCATION" value="E:\Android\BebopDroneV1" />
+  </component>
 </application>
