@@ -14,9 +14,13 @@
           <option name="url" value="https://github.com/catalinacio/MySample_test25iulie.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/catalinacio/BebopDroneV1.01.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="E:\Android" />
+    <option name="cloneParentDir" value="E:\Android\2016-2017" />
   </component>
   <component name="VcsApplicationSettings">
     <option name="PATCH_STORAGE_LOCATION" value="E:\Android\BebopDroneV1" />
